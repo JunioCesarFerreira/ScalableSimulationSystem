@@ -21,7 +21,7 @@ func NewDockerClient() (*client.Client, error) {
 // CreateAndStartContainer cria e inicia um container Docker com nome e porta customizados
 func CreateContainer(ctx context.Context, cli *client.Client, containerName string, hostPort string) (string, error) {
 	containerConfig := &container.Config{
-		Image: "simulation-cooja",
+		Image: "ubuntu-docker",
 		ExposedPorts: nat.PortSet{
 			"22/tcp": struct{}{},
 		},

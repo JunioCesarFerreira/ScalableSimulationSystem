@@ -8,18 +8,21 @@ import (
 )
 
 // ConnectAndExecute conecta ao container via SSH e executa um comando
-func ConnectAndExecute(containerID string, command string) error {
+func ConnectAndExecute(containerName string, port string, command string) error {
 	// Configuração do cliente SSH
 	config := &ssh.ClientConfig{
 		User: "root",
 		Auth: []ssh.AuthMethod{
-			ssh.Password("root"),
+			ssh.Password("password"),
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
 	// Conecta ao container via SSH
-	client, err := ssh.Dial("tcp", "localhost:2223", config)
+	// !# Prod
+	client, err := ssh.Dial("tcp", containerName+":22", config)
+	// !# Debug
+	//client, err := ssh.Dial("tcp", "localhost:"+port, config)
 	if err != nil {
 		return fmt.Errorf("failed to dial: %v", err)
 	}

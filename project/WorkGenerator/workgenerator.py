@@ -39,6 +39,6 @@ def fetch_results():
         time.sleep(5)
 
 if __name__ == "__main__":
-    num_tasks = 100
+    num_tasks = 5
     generate_tasks(num_tasks)
     fetch_results()

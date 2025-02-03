@@ -1,12 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"time"
 
@@ -34,13 +31,14 @@ func main() {
 
 	log.Println("NewKafkaConsumer...")
 	// Inicializa o consumidor Kafka
-	kafkaClient, err := kafkaclient.NewKafkaConsumer("localhost:29092", "simulation_tasks")
+	// !# Prod
+	kafkaClient, err := kafkaclient.NewKafkaConsumer("kafka:9092", "simulation_tasks")
+	// !# Debug
+	//kafkaClient, err := kafkaclient.NewKafkaConsumer("localhost:29092", "simulation_tasks")
 	if err != nil {
 		log.Fatalf("Failed to create Kafka consumer: %v", err)
 	}
 	defer kafkaClient.Close()
-
-	scanner := bufio.NewScanner(os.Stdin)
 
 	var task Task
 	// Consome mensagens do Kafka
@@ -70,9 +68,6 @@ func main() {
 		}
 		log.Printf("Container created with ID: %s", containerID)
 
-		fmt.Print("Continue...")
-		scanner.Scan()
-
 		err = dockerclient.StartContainer(ctx, dockerClient, containerID)
 		if err != nil {
 			log.Printf("Failed to start container: %v", err)
@@ -90,11 +85,8 @@ func main() {
 			continue
 		}
 
-		fmt.Print("Continue...")
-		scanner.Scan()
-
 		// Conecta ao container via SSH e executa um comando
-		err = sshhandler.ConnectAndExecute(containerID, "echo 'SSH conectado com sucesso ao container!'")
+		err = sshhandler.ConnectAndExecute(containerName, hostPort, "echo 'SSH conectado com sucesso ao container!'")
 		if err != nil {
 			log.Printf("Failed to connect via SSH: %v", err)
 			continue
