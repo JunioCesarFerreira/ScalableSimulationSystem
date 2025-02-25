@@ -1,51 +1,53 @@
 # DockerSimGrid
 
-DockerSimGrid é um protótipo de sistema para gerenciamento de simulações distribuídas utilizando **Docker, Kafka e SSH**, permitindo a orquestração de simulações em múltiplos nós.
+🌍 *[Português](README_pt.md)*
 
-**Atenção!** Esta versão é um protótipo e ainda está incompleta.
+DockerSimGrid is a prototype system for managing distributed simulations using **Docker, Kafka, and SSH**, enabling the orchestration of simulations across multiple nodes.
 
-## 📌 Arquitetura
-O sistema é composto pelos seguintes componentes:
+**Attention!** This version is a prototype and is still incomplete.
 
-1. **MongoDB (Opcional)**: Pode ser usado para armazenamento persistente de tarefas e resultados.
-2. **Kafka**: Middleware de mensagens para comunicação assíncrona entre serviços.
-3. **MasterNode (Go)**: Responsável por gerenciar as simulações, interagir com Docker e executar processos via SSH.
-4. **DataCollector**: Coleta e armazena os dados das simulações para posterior análise.
-5. **UbuntuDocker**: Imagem base para execução das simulações dentro de contêineres.
+## 📌 Architecture
+The system consists of the following components:
 
-📜 **Fluxo de trabalho:**
-1. O **MasterNode** recebe solicitações de simulação via Kafka.
-2. Ele instancia e gerencia contêineres Docker para cada simulação.
-3. Se necessário, pode usar **SSH** para executar comandos remotamente.
-4. Os resultados são coletados pelo **DataCollector** e armazenados.
+1. **MongoDB (Optional)**: Can be used for persistent storage of tasks and results.
+2. **Kafka**: Message middleware for asynchronous communication between services.
+3. **MasterNode (Go)**: Responsible for managing simulations, interacting with Docker, and executing processes via SSH.
+4. **DataCollector**: Collects and stores simulation data for later analysis.
+5. **UbuntuDocker**: Base image for running simulations inside containers.
 
-## 🚀 Configuração e Execução
-### **1. Clonar o Repositório**
+📜 **Workflow:**
+1. The **MasterNode** receives simulation requests via Kafka.
+2. It instantiates and manages Docker containers for each simulation.
+3. If necessary, it can use **SSH** to execute commands remotely.
+4. The results are collected by the **DataCollector** and stored.
+
+## 🚀 Setup and Execution
+### **1. Clone the Repository**
 ```sh
- git clone https://github.com/JunioCesarFerreira/ScalableSimulationSystem
- cd examples/DockerSimGrid
+git clone https://github.com/JunioCesarFerreira/ScalableSimulationSystem
+cd examples/DockerSimGrid
 ```
 
-### **2. Construir e Iniciar os Containers**
+### **2. Build and Start Containers**
 ```sh
- docker-compose up --build -d
+docker-compose up --build -d
 ```
 
-### **3. Ver Logs dos Serviços**
+### **3. View Service Logs**
 - **MasterNode:**
 ```sh
- docker-compose logs -f master-node
+docker-compose logs -f master-node
 ```
 - **Kafka:**
 ```sh
- docker-compose logs -f kafka
+docker-compose logs -f kafka
 ```
 - **DataCollector:**
 ```sh
- docker-compose logs -f data-collector
+docker-compose logs -f data-collector
 ```
 
-## 📂 Estrutura do Projeto
+## 📂 Project Structure
 ```
 DockerSimGrid/
 │── docker-compose.yaml
@@ -66,44 +68,44 @@ DockerSimGrid/
 │   │── Dockerfile
 ```
 
-## 🔍 Consultando os Dados
-Se o MongoDB estiver configurado para armazenamento:
+## 🔍 Querying Data
+If MongoDB is configured for storage:
 ```sh
 docker exec -it mongodb mongosh
 ```
-**Consultar tarefas e resultados:**
+**Query tasks and results:**
 ```sh
 use simulation_db
 db.simulations_tasks.find().pretty()
 db.simulations_results.find().pretty()
 ```
 
-## 🛠 Teste Inicial
+## 🛠 Initial Test
 
-### 1. Construir a imagem UbuntuDocker
+### 1. Build the UbuntuDocker image
 
-No diretório `UbuntuDocker`, execute:
+In the `UbuntuDocker` directory, run:
 
 ```bash
 docker build -t ubuntu-docker .
 ```
 
-### 2. Construir com Docker Compose
+### 2. Build with Docker Compose
 
-No diretório `SimGrid`, execute:
+In the `SimGrid` directory, run:
 
 ```bash
-docker compose build 
+docker compose build
 ```
 
-### 3. Executar os contêineres com Docker Compose
+### 3. Run Containers with Docker Compose
 
-No diretório `SimGrid`, execute:
+In the `SimGrid` directory, run:
 
 ```bash
 docker compose up -d
 ```
 
-## 📜 Licença
-Este projeto está licenciado sob a [Licença MIT](../../LICENSE).
+## 📜 License
+This project is licensed under the [MIT License](../../LICENSE).
 

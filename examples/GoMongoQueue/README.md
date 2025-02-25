@@ -1,52 +1,54 @@
 # GoMongoQueue
 
-GoMongoQueue é um protótipo de sistema para gerenciamento de simulações distribuídas baseado em **Docker**, utilizando **MongoDB Change Streams** para comunicação entre os componentes.
+🌍 *[Português](README_pt.md)*
 
-**Atenção!** Esta versão é um protótipo e ainda está incompleta.
+GoMongoQueue is a prototype system for managing distributed simulations based on **Docker**, using **MongoDB Change Streams** for communication between components.
 
-## 📌 Arquitetura
-O sistema é composto por três serviços principais:
+**Attention!** This version is a prototype and is still incomplete.
 
-1. **MongoDB**: Banco de dados NoSQL que armazena as tarefas de simulação e seus resultados.
-2. **WorkGenerator (Python)**: Gera tarefas de simulação e monitora os resultados usando MongoDB Change Streams.
-3. **MasterNode (Go)**: Consome tarefas do MongoDB e executa as simulações concorrentes usando goroutines.
+## 📌 Architecture
+The system consists of three main services:
 
-📜 **Fluxo de trabalho:**
-1. O **WorkGenerator** insere 15 tarefas no MongoDB.
-2. O **MasterNode** escuta essas tarefas, executa as simulações e insere os resultados no banco.
-3. O **WorkGenerator** escuta os resultados e, quando todas as 15 tarefas forem concluídas, gera um novo lote.
+1. **MongoDB**: NoSQL database that stores simulation tasks and their results.
+2. **WorkGenerator (Python)**: Generates simulation tasks and monitors results using MongoDB Change Streams.
+3. **MasterNode (Go)**: Consumes tasks from MongoDB and executes simulations concurrently using goroutines.
 
-## 🚀 Configuração e Execução
-### **1. Clonar o Repositório**
+📜 **Workflow:**
+1. The **WorkGenerator** inserts 15 tasks into MongoDB.
+2. The **MasterNode** listens for these tasks, executes the simulations, and inserts the results into the database.
+3. The **WorkGenerator** listens for the results and, once all 15 tasks are completed, generates a new batch.
+
+## 🚀 Setup and Execution
+### **1. Clone the Repository**
 ```sh
- git clone https://github.com/JunioCesarFerreira/ScalableSimulationSystem
- cd examples/GoMongoQueue
+git clone https://github.com/JunioCesarFerreira/ScalableSimulationSystem
+cd examples/GoMongoQueue
 ```
 
-### **2. Construir e Iniciar os Containers**
+### **2. Build and Start Containers**
 ```sh
- docker-compose up --build -d
+docker-compose up --build -d
 ```
 
-### **3. Inicializar o Replica Set do MongoDB**
-O MongoDB Change Streams requer um **Replica Set** ativo:
+### **3. Initialize MongoDB Replica Set**
+MongoDB Change Streams require an active **Replica Set**:
 ```sh
 docker exec -it mongodb mongosh
 rs.initiate()
 exit
 ```
 
-### **4. Ver Logs dos Serviços**
+### **4. View Service Logs**
 - **WorkGenerator:**
 ```sh
- docker-compose logs -f work-generator
+docker-compose logs -f work-generator
 ```
 - **MasterNode:**
 ```sh
- docker-compose logs -f master-node
+docker-compose logs -f master-node
 ```
 
-## 📂 Estrutura do Projeto
+## 📂 Project Structure
 ```
 GoMongoQueue/
 │── docker-compose.yaml
@@ -61,23 +63,23 @@ GoMongoQueue/
 │   │── work_generator.py
 ```
 
-## 🔍 Consultando os Dados no MongoDB
-### **Acessar o MongoDB via Terminal**
+## 🔍 Querying Data in MongoDB
+### **Access MongoDB via Terminal**
 ```sh
 docker exec -it mongodb mongosh
 ```
-**Listar bancos de dados:**
+**List databases:**
 ```sh
 show dbs
 use simulation_db
 show collections
 ```
-**Consultar tarefas e resultados:**
+**Query tasks and results:**
 ```sh
 db.simulations_tasks.find().pretty()
 db.simulations_results.find().pretty()
 ```
 
-## 📜 Licença
-Este projeto está licenciado sob a [MIT License](../../LICENSE).
+## 📜 License
+This project is licensed under the [MIT License](../../LICENSE).
 
